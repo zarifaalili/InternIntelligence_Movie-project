@@ -11,6 +11,7 @@ import org.example.movieproject.response.MovieResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,16 @@ public class MovieService {
         movieRepository.deleteById(id);
         log.info("ActionLog.deleteMovie.end");
         return null;
+    }
+
+    public List<MovieResponse> getAllMovies() {
+        log.info("ActionLog.getAllMovies.start");
+        var movies=movieRepository.findAll();
+        if(movies.isEmpty()){
+            throw new RuntimeException("No movies found");
+        }
+        log.info("ActionLog.getAllMovies.end");
+        return movies.stream().map(movieMapper::toResponse).toList();
     }
 
 }

@@ -7,6 +7,8 @@ import org.example.movieproject.response.MovieResponse;
 import org.example.movieproject.service.MovieService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/movies")
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class MovieController {
     @DeleteMapping("/delete/{id}")
     public void deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
+    }
+
+    @GetMapping("/getMovies")
+    public List<MovieResponse> getMovies() {
+        return movieService.getAllMovies();
     }
 }
