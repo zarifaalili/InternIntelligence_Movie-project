@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.movieproject.dao.repository.MovieRepository;
 import org.example.movieproject.dao.entity.MovieEntity;
 import org.example.movieproject.exception.customexception.AlreadyExistsException;
+import org.example.movieproject.exception.customexception.NotFoundException;
 import org.example.movieproject.mapper.MovieMapper;
 import org.example.movieproject.request.MovieRequest;
 import org.example.movieproject.response.MovieResponse;
@@ -40,22 +41,21 @@ public class MovieService {
 
     }
 
-    public MovieResponse deleteMovie(Long id) {
+    public void deleteMovie(Long id) {
         log.info("ActionLog.deleteMovie.start");
         var movie = movieRepository.findById(id);
         if (movie.isEmpty()) {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found");
         }
         movieRepository.deleteById(id);
         log.info("ActionLog.deleteMovie.end");
-        return null;
     }
 
     public List<MovieResponse> getAllMovies() {
         log.info("ActionLog.getAllMovies.start");
         var movies = movieRepository.findAll();
         if (movies.isEmpty()) {
-            throw new RuntimeException("No movies found");
+            throw new NotFoundException("No movies found");
         }
         log.info("ActionLog.getAllMovies.end");
         return movies.stream().map(movieMapper::toResponse).toList();
@@ -66,7 +66,7 @@ public class MovieService {
         log.info("ActionLog.updateMovie.start");
         var movie1 = movieRepository.findById(id);
         if (movie1.isEmpty()) {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found");
         }
         var movie = movie1.get();
 
@@ -92,7 +92,7 @@ public class MovieService {
         log.info("ActionLog.getMovie.start");
         var movie = movieRepository.findById(id);
         if (movie.isEmpty()) {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found");
         }
         log.info("ActionLog.getMovie.end");
         return movieMapper.toResponse(movie.get());
@@ -102,7 +102,7 @@ public class MovieService {
         log.info("ActionLog.getMovieByTitle.start");
         var movie = movieRepository.findByTitle(title);
         if (movie.isEmpty()) {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found");
         }
         log.info("ActionLog.getMovieByTitle.end");
         return movieMapper.toResponse(movie.get());
