@@ -31,4 +31,20 @@ public class MovieController {
     public List<MovieResponse> getMovies() {
         return movieService.getAllMovies();
     }
+
+    @PatchMapping("/update/{id}")
+    public MovieResponse updateMovie(@PathVariable Long id, @RequestBody @Valid MovieRequest movieRequest) {
+        return movieService.updateMovie(id, movieRequest);
+    }
+
+    @GetMapping("/getMovie/{id}")
+    public MovieResponse getMovie(@PathVariable Long id) {
+        return movieService.getMovie(id);
+    }
+
+    @GetMapping("/getMovieByTitle/{title}")
+    public MovieResponse getMovieByTitle(@PathVariable String title) {
+        return movieService.getMovieByTitle(title);
+    }
+
 }
